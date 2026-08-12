@@ -1,16 +1,10 @@
-## Hi there 👋
-
-<!--
-**javalife365/javalife365** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
-
-Here are some ideas to get you started:
-
-- 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
--->
+## Backend 
+1.  Java 21
+2.  Spring Boot v4.0.7
+3.  Spring Web
+4.  Spring Data Jpa
+5.  MySQL
+6. Lombok
+7. Spring Validation
+8. Spring Mail
+9. Spring Security + JWT 
