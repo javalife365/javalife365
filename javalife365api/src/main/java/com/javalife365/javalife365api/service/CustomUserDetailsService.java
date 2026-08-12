@@ -25,7 +25,7 @@ public class CustomUserDetailsService  implements UserDetailsService {
         return  new User(
                 appUser.getPhoneNumber(),
                 "",
-                List.of(new SimpleGrantedAuthority(appUser.getRole().toString()))
+                List.of(new SimpleGrantedAuthority(appUser.getRole().name()))
         );
     }
 }
