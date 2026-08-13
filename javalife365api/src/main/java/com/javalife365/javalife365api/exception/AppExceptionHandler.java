@@ -1,14 +1,19 @@
 package com.javalife365.javalife365api.exception;
 
 import com.javalife365.javalife365api.io.AppResponse;
+import com.javalife365.javalife365api.io.ValidationErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 
 import java.time.LocalDateTime;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestControllerAdvice
 @Slf4j
@@ -68,6 +73,30 @@ public class AppExceptionHandler {
                                 .url(webRequest.getDescription(true))
                                 .build()
                 );
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<ValidationErrorResponse> handleValidationException(MethodArgumentNotValidException ex, WebRequest webRequest){
+
+        Map<String,String> errors = ex.getBindingResult()
+                .getFieldErrors()
+                .stream()
+                .collect(Collectors.toMap(
+                        FieldError::getField,
+                        FieldError::getDefaultMessage,
+                        (existing,replacement) -> existing
+                ));
+
+        log.info("Validation errors: {}", errors);
+       var response = ValidationErrorResponse.builder()
+               .message("Validation failed")
+               .status(HttpStatus.BAD_REQUEST)
+               .errors(errors)
+               .url(webRequest.getDescription(true))
+               .timestamp(LocalDateTime.now())
+               .build();
+
+        return ResponseEntity.badRequest().body(response);
     }
 
 

@@ -31,18 +31,22 @@ public class AppUserService {
         if (appUserRepository.existsByEmail(request.email())){
             throw new EmailAlreadyExistsException("Email: "+ request.email() + " already exists" );
         }
+        log.info("checked if email {} already existed in db: {}", request.email(), false);
         if(appUserRepository.existsByPhoneNumber(request.phoneNumber())){
             throw new PhoneNumberAlreadyExistsException("Phone number: " + request.phoneNumber() + " already exists");
         }
+        log.info("checked if phone number {} already existed in db: {}", request.phoneNumber(), false);
 
         var appUser = appUserMapper.toAppUser(request);
 
+        log.info("saving user: {} in db", appUser);
         var savedUser = appUserRepository.save(appUser);
 
         var appUserDTO = appUserMapper.toAppUserDTO(savedUser);
 
         emailService.sendEmailAfterRegistration(appUserDTO.getEmail());
 
+        log.info("returning appropriate response after registration");
         return AppResponse.builder()
                 .message("User saved successfully")
                 .status(HttpStatus.CREATED)
