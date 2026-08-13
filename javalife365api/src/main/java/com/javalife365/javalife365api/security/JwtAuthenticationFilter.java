@@ -33,12 +33,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         String tkn = header.substring(7);
-        String phoneNumber = jwtService.extractPhoneNumber(tkn);
+        String email = jwtService.extractEmail(tkn);
 
-        UserDetails userDetails = userDetailsService.loadUserByUsername(phoneNumber);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(email);
 
-
-        var authentication = new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
+        var authentication = new UsernamePasswordAuthenticationToken(userDetails,userDetails.getPassword(),userDetails.getAuthorities());
 
         authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 

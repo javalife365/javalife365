@@ -100,4 +100,19 @@ public class AppExceptionHandler {
     }
 
 
+    @ExceptionHandler
+    public ResponseEntity<AppResponse> handleEmailNotFoundException(EmailNotFoundException ex, WebRequest webRequest){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(
+                        AppResponse.builder()
+                                .message(ex.getMessage())
+                                .status(HttpStatus.NOT_FOUND)
+                                .url(webRequest.getDescription(true))
+                                .timestamp(LocalDateTime.now())
+                                .build()
+
+                );
+    }
+
+
 }

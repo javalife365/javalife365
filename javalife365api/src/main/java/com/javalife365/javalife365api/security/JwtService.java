@@ -14,20 +14,20 @@ public class JwtService {
     private static final String SECRET =
             "12345678901234567890123456789012345678901234567890";
 
-    private final SecretKey key =
+    private final SecretKey key = Keys.hmacShaKeyFor(SECRET.getBytes(StandardCharsets.UTF_8));
 
-            Keys.hmacShaKeyFor(SECRET.getBytes(StandardCharsets.UTF_8));
-
-    public String generateToken(String phoneNumber){
+    public String generateToken(String email, String firstName, String lastName, String role) {
         return Jwts.builder()
-                .subject(phoneNumber)
+                .subject(email)
+                .claim("name", this.getFirstNameAndLastName(firstName, lastName))
+                .claim("role", role)
                 .issuedAt(new Date())
-                .expiration(new Date(System.currentTimeMillis() + (1000*60*60*8)))
+                .expiration(new Date(System.currentTimeMillis() + (1000 * 60 * 60 * 8)))
                 .signWith(key)
                 .compact();
     }
 
-    public String extractPhoneNumber(String token){
+    public String extractEmail(String token) {
         return Jwts.parser()
                 .verifyWith(key)
                 .build()
@@ -35,5 +35,12 @@ public class JwtService {
                 .getPayload()
                 .getSubject();
     }
+
+    private String getFirstNameAndLastName(String firstName, String lastName) {
+        String _firstName = String.valueOf(firstName.charAt(0)) + firstName.substring(1);
+        String _lastName = String.valueOf(firstName.charAt(0)) + firstName.substring(1);
+        return _firstName + " " + _lastName;
+    }
+
 
 }
