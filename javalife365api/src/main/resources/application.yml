@@ -2,7 +2,7 @@ spring:
   application:
     name: javalife365api
   profiles:
-    active: prod
+    active: dev
 
   # datasource
   datasource:

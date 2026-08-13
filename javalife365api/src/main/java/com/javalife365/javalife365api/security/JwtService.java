@@ -1,5 +1,6 @@
 package com.javalife365.javalife365api.security;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,7 @@ public class JwtService {
                 .claim("name", this.getFirstNameAndLastName(firstName, lastName))
                 .claim("role", role)
                 .issuedAt(new Date())
-                .expiration(new Date(System.currentTimeMillis() + (1000 * 60 * 60 * 8)))
+                .expiration(new Date(System.currentTimeMillis() + (1000 * 60 * 60)))
                 .signWith(key)
                 .compact();
     }
@@ -37,9 +38,32 @@ public class JwtService {
     }
 
     private String getFirstNameAndLastName(String firstName, String lastName) {
-        String _firstName = String.valueOf(firstName.charAt(0)) + firstName.substring(1);
-        String _lastName = String.valueOf(firstName.charAt(0)) + firstName.substring(1);
+        String _firstName = String.valueOf(firstName.charAt(0)).toUpperCase() + firstName.substring(1);
+        String _lastName = String.valueOf(lastName.charAt(0)).toUpperCase() + lastName.substring(1);
         return _firstName + " " + _lastName;
+    }
+
+    private Claims extractAllClaims(String token){
+        return Jwts.parser()
+                .verifyWith(key)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
+    }
+
+    public String extractName(String token){
+        return extractAllClaims(token).get("name", String.class);
+    }
+
+    public String extractRole(String token){
+        return extractAllClaims(token).get("role", String.class);
+    }
+
+    public Date extractIssuedAt(String token){
+        return extractAllClaims(token).getIssuedAt();
+    }
+    public Date extractExpiresAt(String token){
+        return extractAllClaims(token).getExpiration();
     }
 
 
