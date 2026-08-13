@@ -28,6 +28,8 @@ public class AuthService {
                 = authenticationManager.authenticate(
                         new UsernamePasswordAuthenticationToken(request.getEmail(),request.getPassword()));
 
+        log.info("post authentication success");
+
         var customUserDetails = (CustomUserDetails) authentication.getPrincipal();
 
         String token =  jwtService.generateToken(request.getEmail(), customUserDetails.getFirstName(),customUserDetails.getLastName(), customUserDetails.getRole());
@@ -35,6 +37,8 @@ public class AuthService {
         String role = jwtService.extractRole(token);
         Date issuedAt = jwtService.extractIssuedAt(token);
         Date expiresAt = jwtService.extractExpiresAt(token);
+
+        log.info("jwt token generated and login response returned");
 
         return LoginResponse.builder()
                 .token(token)

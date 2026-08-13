@@ -102,6 +102,7 @@ public class AppExceptionHandler {
 
     @ExceptionHandler
     public ResponseEntity<AppResponse> handleEmailNotFoundException(EmailNotFoundException ex, WebRequest webRequest){
+        log.info(ex.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(
                         AppResponse.builder()
