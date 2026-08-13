@@ -39,7 +39,6 @@ public class AppUserMapper {
                 .build();
     }
 
-
     public AppUserDTO toAppUserDTO(AppUser appUser){
         return AppUserDTO.builder()
                 .firstName(appUser.getFirstName())
@@ -55,6 +54,27 @@ public class AppUserMapper {
                                 .zipCode(appUser.getAddress().getZipCode())
                                 .build()
                 )
+                .build();
+    }
+
+
+    public AppUser toAdmin(RegisterRequest request){
+        return AppUser.builder()
+                .firstName(request.firstName())
+                .lastName(request.lastName())
+                .email(request.email())
+                .phoneNumber(request.phoneNumber())
+                .password(passwordEncoder.encode(request.password()))
+                .role(Role.ROLE_ADMIN)
+                .address(
+                        Address.builder()
+                                .streetAddress(request.address().getStreetAddress())
+                                .city(request.address().getCity())
+                                .state(request.address().getState())
+                                .zipCode(request.address().getZipCode())
+                                .build()
+                )
+                .createdAt(LocalDateTime.now())
                 .build();
     }
 }
