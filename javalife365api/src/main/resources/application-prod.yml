@@ -1,8 +1,6 @@
 spring:
   application:
-    name: javalife365api
-  profiles:
-    active: prod
+    version: 1.0.0-prod
 
   # datasource
   datasource:

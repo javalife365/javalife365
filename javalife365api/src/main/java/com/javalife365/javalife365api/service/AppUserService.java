@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.WebRequest;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -24,6 +25,8 @@ public class AppUserService {
     private final AppUserRepository appUserRepository;
     private final AppUserMapper appUserMapper;
     private final EmailService emailService;
+    private final WebRequest webRequest;
+
 
     public AppResponse register(RegisterRequest request){
         log.info("request: {}", request);
@@ -51,6 +54,7 @@ public class AppUserService {
                 .message("User saved successfully")
                 .status(HttpStatus.CREATED)
                 .data(List.of(appUserDTO))
+                .url(webRequest.getDescription(true))
                 .timestamp(LocalDateTime.now())
                 .build();
     }

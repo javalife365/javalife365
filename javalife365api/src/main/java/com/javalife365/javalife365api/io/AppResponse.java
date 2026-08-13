@@ -17,6 +17,6 @@ public class AppResponse {
     private String message;
     private HttpStatus status;
     private List<Object> data;
-    private LocalDateTime timestamp;
     private String url;
+    private LocalDateTime timestamp;
 }
