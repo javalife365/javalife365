@@ -69,6 +69,7 @@ public class AppUserMapper {
                 .address(
                         Address.builder()
                                 .streetAddress(request.address().getStreetAddress())
+                                .apartmentNumber(request.address().getApartmentNumber())
                                 .city(request.address().getCity())
                                 .state(request.address().getState())
                                 .zipCode(request.address().getZipCode())

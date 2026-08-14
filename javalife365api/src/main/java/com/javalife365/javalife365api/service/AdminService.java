@@ -40,6 +40,7 @@ public class AdminService {
 
         admin = appUserRepository.save(admin);
 
+        log.info("user registered successfully and return appropriate response");
         return AppResponse.builder()
                 .message("Registered successfully")
                 .status(HttpStatus.CREATED)
